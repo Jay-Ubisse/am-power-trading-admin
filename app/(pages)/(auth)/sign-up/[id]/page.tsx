@@ -19,10 +19,9 @@ const SignUp = async () => {
 
   return (
     <div className="relative">
-      <Link href="/" className="absolute -top-12">
-        <Button>
-          <ArrowLeft />
-          <span>Voltar ao Dashboard</span>
+      <Link href="/" className="absolute -left-16 top-2">
+        <Button className="rounded-[50%] h-10 w-10 p-0">
+          <ArrowLeft size={24} />
         </Button>
       </Link>
       <SignUpForm />

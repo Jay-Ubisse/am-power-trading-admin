@@ -82,12 +82,13 @@ export function ProductsTable() {
           <TableRow>
             <TableHead className="w-[100px]">ID</TableHead>
             <TableHead>Nome</TableHead>
+            <TableHead>Marca</TableHead>
             <TableHead>Categoria</TableHead>
-            <TableHead>Price</TableHead>
+            <TableHead>Sub-categoria</TableHead>
+            <TableHead>Preço</TableHead>
             <TableHead>Quantidade em stock</TableHead>
             <TableHead>Quantidade vendida</TableHead>
             <TableHead>Data de registro</TableHead>
-            <TableHead>Ultima actualizacao</TableHead>
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
@@ -96,8 +97,12 @@ export function ProductsTable() {
             <TableRow key={productData.id}>
               <TableCell>{productData.id}</TableCell>
               <TableCell className="text-center">{productData.name}</TableCell>
+              <TableCell className="text-center">{productData.brand}</TableCell>
               <TableCell className="text-center">
                 {productData.category}
+              </TableCell>
+              <TableCell className="text-center">
+                {productData.subCategory}
               </TableCell>
               <TableCell className="text-center">{productData.price}</TableCell>
               <TableCell className="text-center">
@@ -108,9 +113,6 @@ export function ProductsTable() {
               </TableCell>
               <TableCell className="text-center">
                 {format(productData.createdAt, "MM/dd/yyyy")}
-              </TableCell>
-              <TableCell className="text-center">
-                {format(productData.updatedAt, "MM/dd/yyyy")}
               </TableCell>
               <TableCell className="flex gap-2 items-center">
                 <Link href={"#"}>

@@ -24,13 +24,16 @@ import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
-  name: z.string().min(1, "O campo é obrigatório"),
-  price: z.string().min(1, "O campo é obrigatório"),
+  name: z.string().min(1, "O nome é obrigatório"),
+  brand: z.string().min(1, "A marca é obrigatória"),
+  price: z.string().min(1, "O preço é obrigatório"),
   description: z.string(),
   image: z.string(),
   category: z.string().min(1, "A categoria é obrigatória"),
+  subCategory: z.string().min(1, "A sub-categoria é obrigatória"),
   quantityInStock: z.string(),
 });
 
@@ -55,10 +58,12 @@ export function AddProductForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      brand: "",
       price: "",
       description: "",
       image: "",
       category: "",
+      subCategory: "",
       quantityInStock: "",
     },
   });
@@ -69,19 +74,24 @@ export function AddProductForm() {
     try {
       const formData = new FormData();
       formData.append("name", values.name);
-      formData.append("price", values.price);
+      formData.append("brand", values.brand),
+        formData.append("price", values.price);
       formData.append("description", values.description);
       formData.append("image", file);
       formData.append("category", values.category);
+      formData.append("subCategory", values.subCategory);
       formData.append("quantityInStock", values.quantityInStock);
 
+      toast.loading("Cadastrando produto...", { id: "1" });
       const response = await axios.post("/api/products", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
       console.log(response);
+      toast.success("Produto cadastrado com sucesso.", { id: "1" });
     } catch (error) {
+      toast.error("Ocorreu um erro. Tente de novo.", { id: "1" });
       console.error("Error saving product:", error);
     }
   }
@@ -106,7 +116,7 @@ export function AddProductForm() {
             className="flex gap-4 mt-10"
           >
             <div className="w-2/5 bg-slate-50 rounded-lg h-fit mt-4">
-              <div className="w-full h-[20rem] flex justify-center items-center">
+              <div className="w-full h-[25rem] flex justify-center items-center">
                 {preview ? (
                   <img src={preview} className="w-full object-contain" />
                 ) : (
@@ -162,10 +172,36 @@ export function AddProductForm() {
               />
               <FormField
                 control={form.control}
+                name="brand"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Marca</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="category"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Categoria</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="subCategory"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sub-categoria</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>

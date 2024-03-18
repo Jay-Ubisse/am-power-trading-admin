@@ -9,9 +9,11 @@ export async function POST(req: NextRequest) {
   const formData = await req.formData();
 
   const name = formData.get("name") as string;
+  const brand = formData.get("brand") as string;
   const price = formData.get("price") as string;
   const description = formData.get("description") as string;
   const category = formData.get("category") as string;
+  const subCategory = formData.get("subCategory") as string;
   const quantityInStock = formData.get("quantityInStock") as string;
   const image = (formData.get("image") as File) || null;
 
@@ -54,7 +56,9 @@ export async function POST(req: NextRequest) {
     const result = await db.product.create({
       data: {
         name,
+        brand,
         category,
+        subCategory,
         price: Number(price),
         quantityInStock: Number(quantityInStock),
         description,
@@ -66,9 +70,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ product: result });
   } catch (e) {
     console.error("Error while trying to upload a file\n", e);
-    return NextResponse.json(
-      { error: "Algo deu muito errado." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Algo deu errado." }, { status: 500 });
   }
 }
